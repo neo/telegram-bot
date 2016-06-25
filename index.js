@@ -37,7 +37,12 @@ bot.post('/' + token, function (req, res) {
 		lastUpdate_id = req.body.update_id;
 		if (req.body.message) {
 			var message = req.body.message;
-			sendMessage(message.chat.id, 'Hey ' + message.from.first_name);
+			if (message.from.username === 'neolwc') {
+				sendMessage(message.chat.id, 'Hey beloved ' + message.from.first_name);
+			}
+			else {
+				sendMessage(message.chat.id, 'Hey ' + message.from.first_name);
+			}
 		}
 	}
 	res.send();
