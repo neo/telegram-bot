@@ -16,6 +16,18 @@ request({
 	console.log(body.description);
 });
 
+function sendMessage (chat_id, text) {
+	request({
+		url: url + 'sendMessage',
+		method: 'POST',
+		json: true,
+		body: {
+			chat_id: chat_id,
+			text: text
+		}
+	});
+}
+
 bot.use(bodyParser.json());
 
 var lastUpdate_id;
@@ -25,15 +37,7 @@ bot.post('/' + token, function (req, res) {
 		lastUpdate_id = req.body.update_id;
 		if (req.body.message) {
 			var message = req.body.message;
-			request({
-				url: url + 'sendMessage',
-				method: 'POST',
-				json: true,
-				body: {
-					chat_id: message.chat.id,
-					text: 'Hey ' + message.from.first_name
-				}
-			});
+			sendMessage(message.chat.id, 'Hey ' + message.from.first_name);
 		}
 	}
 	res.send();
