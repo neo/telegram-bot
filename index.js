@@ -30,9 +30,11 @@ function sendMessage (chat_id, text) {
 
 bot.use(bodyParser.json());
 
-var help = `/rachel - About Rachel
+var help = `Here is a list of available commands:
+/rachel - About Rachel
 /cancel - Cancel the current operation
 /help - A list of commands`;
+
 var lastUpdate_id, isNoting;
 
 bot.post('/' + token, function (req, res) {
