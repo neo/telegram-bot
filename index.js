@@ -30,6 +30,9 @@ function sendMessage (chat_id, text) {
 
 bot.use(bodyParser.json());
 
+var help = `/rachel - About Rachel
+/cancel - Cancel the current operation
+/help - A list of commands`;
 var lastUpdate_id, isNoting;
 
 bot.post('/' + token, function (req, res) {
@@ -54,7 +57,13 @@ bot.post('/' + token, function (req, res) {
 					});
 				}
 				else if (message.entities) {
-					if (message.text.indexOf('/note') >= 0) {
+					if (message.text.indexOf('/cancel') >= 0) {
+						isNoting = false;
+					}
+					else if (message.text.indexOf('/help') >= 0) {
+						sendMessage(message.chat.id, help);
+					}
+					else if (message.text.indexOf('/note') >= 0) {
 						isNoting = true;
 						sendMessage(message.chat.id, 'Please reply with you note.');
 					}
