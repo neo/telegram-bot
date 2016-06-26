@@ -37,7 +37,8 @@ bot.post('/' + token, function (req, res) {
 		lastUpdate_id = req.body.update_id;
 		if (req.body.message) {
 			var message = req.body.message;
-			if (message.from.username === 'neolwc') {
+			if (/rachel/ig.test(message.text)) sendMessage(message.chat.id, `I've been with Rachel for ${Math.floor((new Date() - new Date('2016-05-19 EDT')) / (1000 * 60 * 60 * 24))} days.`);
+			else if (message.from.username === 'neolwc') {
 				if (isNoting) {
 					isNoting = false;
 					request({
@@ -49,7 +50,7 @@ bot.post('/' + token, function (req, res) {
 							content: ''
 						}
 					}, function (error, response, body) {
-						sendMessage(message.chat.id, body);
+						sendMessage(message.chat.id, body.message);
 					});
 				}
 				else if (message.entities) {
@@ -60,7 +61,7 @@ bot.post('/' + token, function (req, res) {
 				}
 				else sendMessage(message.chat.id, 'Hey beloved ' + message.from.first_name);
 			}
-			else {
+			else { // not me
 				sendMessage(message.chat.id, 'Hey ' + message.from.first_name);
 			}
 		}
