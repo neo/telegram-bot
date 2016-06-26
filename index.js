@@ -30,7 +30,7 @@ function sendMessage (chat_id, text) {
 
 bot.use(bodyParser.json());
 
-var lastUpdate_id;
+var lastUpdate_id, isNoting;
 
 bot.post('/' + token, function (req, res) {
 	if (lastUpdate_id != req.body.update_id) {
@@ -38,8 +38,17 @@ bot.post('/' + token, function (req, res) {
 		if (req.body.message) {
 			var message = req.body.message;
 			if (message.from.username === 'neolwc') {
-				if (message.entities) sendMessage(message.chat.id, message.entities);
-				sendMessage(message.chat.id, 'Hey beloved ' + message.from.first_name);
+				if (isNoting) {
+					isNoting = false;
+					sendMessage(message.chat.id, message.text);
+				}
+				else if (message.entities) {
+					if (message.text.indexOf('/note') >= 0) {
+						isNoting = true;
+						sendMessage(message.chat.id, 'Please reply with you note.');
+					}
+				}
+				else sendMessage(message.chat.id, 'Hey beloved ' + message.from.first_name);
 			}
 			else {
 				sendMessage(message.chat.id, 'Hey ' + message.from.first_name);
