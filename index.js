@@ -38,6 +38,7 @@ bot.post('/' + token, function (req, res) {
 		if (req.body.message) {
 			var message = req.body.message;
 			if (message.from.username === 'neolwc') {
+				if (message.entities) sendMessage(message.chat.id, message.entities);
 				sendMessage(message.chat.id, 'Hey beloved ' + message.from.first_name);
 			}
 			else {
