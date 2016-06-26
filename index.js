@@ -49,7 +49,7 @@ bot.post('/' + token, function (req, res) {
 							content: ''
 						}
 					}, function (error, response, body) {
-						sendMessage(message.chat.id, body.message);
+						sendMessage(message.chat.id, body);
 					});
 				}
 				else if (message.entities) {
