@@ -40,7 +40,17 @@ bot.post('/' + token, function (req, res) {
 			if (message.from.username === 'neolwc') {
 				if (isNoting) {
 					isNoting = false;
-					sendMessage(message.chat.id, message.text);
+					request({
+						url: process.env.noteAPI,
+						method: 'POST',
+						json: true,
+						body: {
+							title: message.text,
+							content: ''
+						}
+					}, function (error, response, body) {
+						sendMessage(message.chat.id, body.message);
+					});
 				}
 				else if (message.entities) {
 					if (message.text.indexOf('/note') >= 0) {
