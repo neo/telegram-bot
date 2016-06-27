@@ -44,7 +44,19 @@ bot.post('/' + token, function (req, res) {
 			var message = req.body.message;
 			if (/rachel/ig.test(message.text)) sendMessage(message.chat.id, `I've been with Rachel for ${Math.floor((new Date() - new Date('2016-05-19 EDT')) / (1000 * 60 * 60 * 24))} days.`);
 			else if (message.from.username === 'neolwc') {
-				if (isNoting) {
+				if (message.entities) {
+					if (message.text.indexOf('/cancel') >= 0) {
+						isNoting = false;
+					}
+					else if (message.text.indexOf('/help') >= 0) {
+						sendMessage(message.chat.id, help);
+					}
+					else if (message.text.indexOf('/note') >= 0) {
+						isNoting = true;
+						sendMessage(message.chat.id, 'Please reply with you note.');
+					}
+				}
+				else if (isNoting) {
 					isNoting = false;
 					request({
 						url: process.env.noteAPI,
@@ -57,18 +69,6 @@ bot.post('/' + token, function (req, res) {
 					}, function (error, response, body) {
 						sendMessage(message.chat.id, body.message);
 					});
-				}
-				else if (message.entities) {
-					if (message.text.indexOf('/cancel') >= 0) {
-						isNoting = false;
-					}
-					else if (message.text.indexOf('/help') >= 0) {
-						sendMessage(message.chat.id, help);
-					}
-					else if (message.text.indexOf('/note') >= 0) {
-						isNoting = true;
-						sendMessage(message.chat.id, 'Please reply with you note.');
-					}
 				}
 				else sendMessage(message.chat.id, 'Hey beloved ' + message.from.first_name);
 			}
